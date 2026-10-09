@@ -53,8 +53,8 @@ def perguntar_suspeito(pergunta: str, historico: list[dict], caso: dict) -> str:
     return resposta.text.strip()
 
 
-def avaliar_acusacao(resposta_mentira: str, resposta_verdade: str, resposta_motivo: str, caso: dict) -> dict:
-    prompt = prompts.prompt_avaliador(caso, resposta_mentira, resposta_verdade, resposta_motivo)
+def avaliar_acusacao(resposta_mentira: str, resposta_verdade: str, caso: dict) -> dict:
+    prompt = prompts.prompt_avaliador(caso, resposta_mentira, resposta_verdade)
     try:
         resposta = _model(json_mode=True).generate_content(prompt)
         return json.loads(resposta.text)
@@ -63,12 +63,10 @@ def avaliar_acusacao(resposta_mentira: str, resposta_verdade: str, resposta_moti
 
 
 def calcular_pontuacao(resultado: dict) -> int:
-    """Soma os 3 criterios booleanos retornados pela IA avaliadora. Nunca a IA decide a nota."""
+    """Soma os 2 criterios booleanos retornados pela IA avaliadora. Nunca a IA decide a nota."""
     pontos = 0
     if resultado.get("identificou_mentira"):
         pontos += 1
     if resultado.get("explicou_verdade"):
-        pontos += 1
-    if resultado.get("identificou_motivo"):
         pontos += 1
     return pontos

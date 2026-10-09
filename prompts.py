@@ -82,7 +82,7 @@ Pergunta do jogador: {pergunta}
 """
 
 
-def prompt_avaliador(caso: dict, resposta_mentira: str, resposta_verdade: str, resposta_motivo: str) -> str:
+def prompt_avaliador(caso: dict, resposta_mentira: str, resposta_verdade: str) -> str:
     return f"""Você é o avaliador de um jogo de dedução. Compare as respostas do jogador com os fatos reais do caso.
 Considere equivalentes respostas com o mesmo sentido, mesmo usando palavras diferentes.
 Responda SOMENTE com este JSON, sem texto adicional:
@@ -90,24 +90,20 @@ Responda SOMENTE com este JSON, sem texto adicional:
 {{
   "identificou_mentira": true ou false,
   "explicou_verdade": true ou false,
-  "identificou_motivo": true ou false,
   "justificativa": "2-3 frases explicando o que o jogador acertou e/ou errou"
 }}
 
 Fatos reais do caso:
 - Mentira principal: {caso['mentira_principal']}
 - O que realmente aconteceu: {caso['verdade']}
-- Motivo real: {caso['motivo']}
 
 Respostas do jogador:
 - Mentira que ele identificou: {resposta_mentira}
 - O que ele acha que aconteceu: {resposta_verdade}
-- Motivo que ele apontou: {resposta_motivo}
 
 Critérios:
 - "identificou_mentira": true se a resposta do jogador captura a mesma ideia central de mentira_principal.
 - "explicou_verdade": true se a explicação do jogador tem o mesmo sentido geral de verdade,
   mesmo sem todos os detalhes.
-- "identificou_motivo": true se o motivo apontado tem o mesmo sentido de motivo.
 Seja consistente: entradas equivalentes devem gerar avaliações equivalentes.
 """
